@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamified Coding Journal</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Login/Register Screen -->
+    <div id="authScreen" class="screen">
+        <div class="auth-container">
+            <h1>🎮 Gamified Coding Journal</h1>
+            
+            <div id="loginForm" class="auth-form">
+                <h2>Login</h2>
+                <input type="text" id="loginUsername" placeholder="Username" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button onclick="login()">Login</button>
+                <p>Don't have an account? <a href="#" onclick="showRegister()">Register</a></p>
+            </div>
+            
+            <div id="registerForm" class="auth-form" style="display: none;">
+                <h2>Create Account</h2>
+                <input type="text" id="registerUsername" placeholder="Username" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <button onclick="register()">Create Account</button>
+                <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Screen -->
+    <div id="mainScreen" class="screen" style="display: none;">
+        <!-- Header with user info and XP -->
+        <header class="header">
+            <div class="user-info">
+                <h2>Welcome, <span id="currentUser"></span>!</h2>
+                <div class="xp-container">
+                    <span>⚡ XP: <span id="userXP">0</span></span>
+                    <span>🏆 Level: <span id="userLevel">1</span></span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button onclick="showDataMenu()" class="data-btn">📁 Data</button>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+        </header>
+
+        <!-- Data Management Modal -->
+        <div id="dataModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeDataMenu()">&times;</span>
+                <h2>📁 Data Management</h2>
+                <div class="data-actions">
+                    <button onclick="exportUsersData()" class="data-action-btn">
+                        📤 Export Users Data
+                        <small>Download data/users.json with all user accounts</small>
+                    </button>
+                    <button onclick="exportXpData()" class="data-action-btn">
+                        🏆 Export XP Data
+                        <small>Download data/xp_users.json with XP tracking</small>
+                    </button>
+                    <button onclick="exportUserCompiledCode()" class="data-action-btn">
+                        💻 Export My Compiled Code
+                        <small>Download data/[userid].json with your projects</small>
+                    </button>
+                    <button onclick="importUsersData()" class="data-action-btn">
+                        📥 Import Users Data
+                        <small>Load users.json file to restore accounts</small>
+                    </button>
+                    <button onclick="createBackup()" class="data-action-btn">
+                        💾 Create Personal Backup
+                        <small>Download your personal data backup</small>
+                    </button>
+                    <button onclick="clearAllData()" class="data-action-btn danger">
+                        🗑️ Clear All Data
+                        <small>Delete all accounts and projects (irreversible!)</small>
+                    </button>
+                </div>
+                <div class="data-info">
+                    <h4>📋 Data Storage Information</h4>
+                    <p>• <strong>users.json</strong> - Contains all user accounts and profiles</p>
+                    <p>• <strong>xp_users.json</strong> - Tracks all XP transactions and achievements</p>
+                    <p>• <strong>[userid].json</strong> - Individual user's compiled code and projects</p>
+                    <p>• Files auto-export to data/ folder for proper organization</p>
+                    <p>• Export regularly to keep backups and maintain data integrity</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Editor and Preview Container -->
+        <div class="main-content">
+            <div class="editor-container">
+                <div class="editor-header">
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('html')" data-lang="html">
+                            <span class="tab-icon">📄</span>
+                            <span class="tab-text">HTML</span>
+                        </button>
+                        <button class="tab-btn" onclick="switchTab('css')" data-lang="css">
+                            <span class="tab-icon">🎨</span>
+                            <span class="tab-text">CSS</span>
+                        </button>
+                        <button class="tab-btn" onclick="switchTab('js')" data-lang="js">
+                            <span class="tab-icon">⚡</span>
+                            <span class="tab-text">JavaScript</span>
+                        </button>
+                    </div>
+                    <div class="editor-info">
+                        <span id="lineCount">Lines: 1</span>
+                        <span id="charCount">Chars: 0</span>
+                    </div>
+                </div>
+                
+                <div class="code-editor-wrapper">
+                    <div class="line-numbers" id="lineNumbers">1</div>
+                    <textarea id="htmlEditor" class="editor active" placeholder="<!-- Write your HTML code here -->" oninput="updateEditorStats()"></textarea>
+                    <textarea id="cssEditor" class="editor" placeholder="/* Write your CSS styles here */" oninput="updateEditorStats()"></textarea>
+                    <textarea id="jsEditor" class="editor" placeholder="// Write your JavaScript code here" oninput="updateEditorStats()"></textarea>
+                </div>
+                
+                <div class="editor-controls">
+                    <div class="control-group session-controls">
+                        <button id="startBtn" onclick="startCodingSession()" class="btn-start">
+                            <i class="icon">🚀</i>
+                            <span>START</span>
+                        </button>
+                        <button id="runBtn" onclick="runCodeWithDatabase()" class="btn-run" disabled>
+                            <i class="icon">▶️</i>
+                            <span>RUN</span>
+                        </button>
+                        <div class="session-status-container">
+                            <span class="session-status" id="sessionStatus">Click START to begin</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <button onclick="playPreview()" class="btn-play">
+                            <i class="icon">🎬</i>
+                            <span>Preview</span>
+                        </button>
+                        <button onclick="saveProject()" class="btn-success">
+                            <i class="icon">💾</i>
+                            <span>Save</span>
+                        </button>
+                    </div>
+                    <div class="control-group">
+                        <button onclick="clearEditor()" class="btn-secondary">
+                            <i class="icon">🗑️</i>
+                            <span>Clear</span>
+                        </button>
+                        <button onclick="formatCode()" class="btn-secondary">
+                            <i class="icon">✨</i>
+                            <span>Format</span>
+                        </button>
+                        <button onclick="endCodingSession()" class="btn-end" id="endBtn">
+                            <i class="icon">🛑</i>
+                            <span>End Session</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-container">
+                <div class="preview-header">
+                    <div class="preview-title">
+                        <h3>🖥️ Live Preview</h3>
+                        <div class="preview-status" id="previewStatus">Ready</div>
+                    </div>
+                    <div class="preview-controls">
+                        <button onclick="refreshPreview()" class="preview-btn" title="Refresh">
+                            <i class="icon">🔄</i>
+                        </button>
+                        <button onclick="toggleFullscreen()" class="preview-btn" title="Fullscreen">
+                            <i class="icon">⛶</i>
+                        </button>
+                        <button onclick="toggleResponsiveMode()" class="preview-btn" title="Responsive Mode" id="responsiveBtn">
+                            <i class="icon">📱</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="preview-viewport">
+                    <div class="device-frame" id="deviceFrame">
+                        <div class="device-header">
+                            <div class="device-buttons">
+                                <span class="device-btn red"></span>
+                                <span class="device-btn yellow"></span>
+                                <span class="device-btn green"></span>
+                            </div>
+                            <div class="device-url">localhost:3000/preview</div>
+                        </div>
+                        <iframe id="preview" class="preview-frame"></iframe>
+                    </div>
+                </div>
+                <div class="preview-footer">
+                    <div class="console-toggle" onclick="toggleConsole()">
+                        <span>Console</span>
+                        <span id="consoleToggleIcon">▲</span>
+                    </div>
+                    <div class="console-output" id="consoleOutput">
+                        <div class="console-line">Ready to execute code...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects History -->
+        <div class="projects-section">
+            <h3>Your Projects</h3>
+            <div id="projectsList" class="projects-list">
+                <!-- Projects will be loaded here -->
+            </div>
+        </div>
+
+        <!-- XP Notification -->
+        <div id="xpNotification" class="xp-notification">
+            <span id="xpMessage"></span>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/xp-system.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
