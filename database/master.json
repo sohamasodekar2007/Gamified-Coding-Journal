@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": 1764871986343,
+      "username": "xyz1234",
+      "email": "Soham@gmail.com",
+      "level": 1,
+      "xp": 50,
+      "createdAt": "2025-12-04T23:43:06.343088",
+      "lastActivity": "2025-12-04T23:43:06.343098"
+    }
+  ],
+  "metadata": {
+    "created": "2025-11-30T16:48:09.671Z",
+    "lastUpdated": "2025-12-04T23:43:06.351277",
+    "totalUsers": 1,
+    "version": "2.0.0"
+  },
+  "statistics": {
+    "totalXpAwarded": 50,
+    "totalSessions": 0,
+    "totalProjects": 0,
+    "totalErrors": 0
+  }
+}

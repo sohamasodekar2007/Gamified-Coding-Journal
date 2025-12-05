@@ -1,0 +1,62 @@
+{
+  "id": 1764871986343,
+  "username": "xyz1234",
+  "email": "Soham@gmail.com",
+  "password": "Soham@1234",
+  "xp": 50,
+  "level": 1,
+  "streak": 0,
+  "statistics": {
+    "totalSessions": 0,
+    "totalCodeRuns": 0,
+    "totalProjects": 0,
+    "totalErrors": 0,
+    "totalXpEarned": 50,
+    "totalXpLost": 0,
+    "htmlLines": 0,
+    "cssLines": 0,
+    "jsLines": 0,
+    "totalLines": 0,
+    "averageSessionDuration": 0,
+    "longestStreak": 0,
+    "errorsFixed": 0,
+    "perfectSessions": 0,
+    "productiveSessions": 0
+  },
+  "achievements": [
+    {
+      "id": "welcome",
+      "name": "Welcome to Coding!",
+      "description": "Created your account",
+      "unlockedAt": "2025-12-04T23:43:06.343056",
+      "xpBonus": 50
+    }
+  ],
+  "projects": [],
+  "sessions": [],
+  "xpHistory": [
+    {
+      "id": 1764871986343,
+      "change": 50,
+      "reason": "Welcome bonus",
+      "timestamp": "2025-12-04T23:43:06.343081",
+      "sessionId": null
+    }
+  ],
+  "errorHistory": [],
+  "settings": {
+    "theme": "dark",
+    "autoSave": true,
+    "notifications": true,
+    "soundEnabled": true,
+    "difficulty": "beginner",
+    "language": "en"
+  },
+  "metadata": {
+    "createdAt": "2025-12-04T23:43:06.343088",
+    "lastLoginDate": "2025-12-04T23:43:06.343091",
+    "lastActivity": "2025-12-04T23:43:06.343098",
+    "version": "2.0.0",
+    "migrated": false
+  }
+}
